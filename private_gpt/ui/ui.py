@@ -22,6 +22,7 @@ from private_gpt.server.chunks.chunks_service import Chunk, ChunksService
 from private_gpt.server.ingest.ingest_service import IngestService
 from private_gpt.settings.settings import settings
 from private_gpt.ui.images import logo_svg
+from Versiyon_Bilgisi import Versiyon_Bilgisi
 
 logger = logging.getLogger(__name__)
 
@@ -310,6 +311,7 @@ class PrivateGptUi:
                 align-content: center;
                 justify-content: center;
                 align-items: center;
+                position: relative;
             }
             .logo img {
                 height: 40px;  # İkon boyutunu ayarlayabilirsiniz
@@ -327,7 +329,15 @@ class PrivateGptUi:
             """
         ) as blocks:
             with gr.Row():
-                gr.HTML(f"<div class='logo'/><img src={logo_svg} alt='baykar.ico'/><h1>BAYKAR GPT</h1></div>")
+                gr.HTML(f"""
+                    <div class='logo'>
+                        <img src={logo_svg} alt='baykar.ico'/>
+                        <h1>BAYKAR GPT</h1>
+                        <span style="position: absolute; top: 10px; right: 10px; color: white;">
+                            v{Versiyon_Bilgisi.major}.{Versiyon_Bilgisi.minor}.{Versiyon_Bilgisi.build}.{Versiyon_Bilgisi.product_id}
+                        </span>
+                    </div>
+                    """)
 
             with gr.Row(equal_height=False):
                 with gr.Column(scale=3):
