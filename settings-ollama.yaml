@@ -11,7 +11,7 @@ embedding:
   mode: ollama
 
 ollama:
-  llm_model: mistral
+  llm_model: llama3
   embedding_model: nomic-embed-text
   api_base: http://localhost:11434
   embedding_api_base: http://localhost:11434  # change if your embedding model runs on another ollama
@@ -24,7 +24,7 @@ ollama:
   request_timeout: 120.0  # Time elapsed until ollama times out the request. Default is 120s. Format is float.
 
 vectorstore:
-  database: qdrant
+  database: chroma
 
 qdrant:
   path: local_data/private_gpt/qdrant

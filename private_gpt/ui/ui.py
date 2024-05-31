@@ -27,13 +27,13 @@ logger = logging.getLogger(__name__)
 
 THIS_DIRECTORY_RELATIVE = Path(__file__).parent.relative_to(PROJECT_ROOT_PATH)
 # Should be "private_gpt/ui/avatar-bot.ico"
-AVATAR_BOT = THIS_DIRECTORY_RELATIVE / "avatar-bot.ico"
+AVATAR_BOT = THIS_DIRECTORY_RELATIVE / "baykar.ico"
 
-UI_TAB_TITLE = "My Private GPT"
+UI_TAB_TITLE = "Baykar GPT"
 
-SOURCES_SEPARATOR = "\n\n Sources: \n"
+SOURCES_SEPARATOR = "\n\n Kaynaklar: \n"
 
-MODES = ["Query Files", "Search Files", "LLM Chat (no context from files)"]
+MODES = ["Sorgu Dosyaları", "Dosyalarda Arama", "LLM Sohbet (Dosya içeriklerinden bağımsız)"]
 
 
 class Source(BaseModel):
@@ -144,7 +144,7 @@ class PrivateGptUi:
                 ),
             )
         match mode:
-            case "Query Files":
+            case "Sorgu Dosyaları":
 
                 # Use only the selected file for the query
                 context_filter = None
@@ -164,14 +164,14 @@ class PrivateGptUi:
                     context_filter=context_filter,
                 )
                 yield from yield_deltas(query_stream)
-            case "LLM Chat (no context from files)":
+            case "LLM Sohbet (Dosya içeriklerinden bağımsız)":
                 llm_stream = self._chat_service.stream_chat(
                     messages=all_messages,
                     use_context=False,
                 )
                 yield from yield_deltas(llm_stream)
 
-            case "Search Files":
+            case "Dosyalarda Arama":
                 response = self._chunks_service.retrieve_relevant(
                     text=message, limit=4, prev_next_chunks=0
                 )
@@ -192,10 +192,10 @@ class PrivateGptUi:
         p = ""
         match mode:
             # For query chat mode, obtain default system prompt from settings
-            case "Query Files":
+            case "Sorgu Dosyaları":
                 p = settings().ui.default_query_system_prompt
             # For chat mode, obtain default system prompt from settings
-            case "LLM Chat (no context from files)":
+            case "LLM Sohbet (Dosya içeriklerinden bağımsız)":
                 p = settings().ui.default_chat_system_prompt
             # For any other mode, clear the system prompt
             case _:
@@ -301,41 +301,51 @@ class PrivateGptUi:
         with gr.Blocks(
             title=UI_TAB_TITLE,
             theme=gr.themes.Soft(primary_hue=slate),
-            css=".logo { "
-            "display:flex;"
-            "background-color: #C7BAFF;"
-            "height: 80px;"
-            "border-radius: 8px;"
-            "align-content: center;"
-            "justify-content: center;"
-            "align-items: center;"
-            "}"
-            ".logo img { height: 25% }"
-            ".contain { display: flex !important; flex-direction: column !important; }"
-            "#component-0, #component-3, #component-10, #component-8  { height: 100% !important; }"
-            "#chatbot { flex-grow: 1 !important; overflow: auto !important;}"
-            "#col { height: calc(100vh - 112px - 16px) !important; }",
+            css="""
+            .logo {
+                display: flex;
+                background-color: #2d4e9c;  # Arka plan rengini değiştirebilirsiniz
+                height: 80px;
+                border-radius: 8px;
+                align-content: center;
+                justify-content: center;
+                align-items: center;
+            }
+            .logo img {
+                height: 40px;  # İkon boyutunu ayarlayabilirsiniz
+                width: 40px;
+            }
+            .logo h1 {
+                color: white;  # Yazı rengini değiştirebilirsiniz
+                margin-left: 0;  /* Remove left margin for centering */
+                margin-top: 10px;  /* Add top margin for spacing */
+            }
+            .contain { display: flex !important; flex-direction: column !important; }
+            #component-0, #component-3, #component-10, #component-8  { height: 100% !important; }
+            #chatbot { flex-grow: 1 !important; overflow: auto !important; }
+            #col { height: calc(100vh - 112px - 16px) !important; }
+            """
         ) as blocks:
             with gr.Row():
-                gr.HTML(f"<div class='logo'/><img src={logo_svg} alt=PrivateGPT></div")
+                gr.HTML(f"<div class='logo'/><img src={logo_svg} alt='baykar.ico'/><h1>BAYKAR GPT</h1></div>")
 
             with gr.Row(equal_height=False):
                 with gr.Column(scale=3):
                     mode = gr.Radio(
                         MODES,
-                        label="Mode",
-                        value="Query Files",
+                        label="Mod",
+                        value="Sorgu Dosyaları",
                     )
                     upload_button = gr.components.UploadButton(
-                        "Upload File(s)",
+                        "Dosya Yükle",
                         type="filepath",
                         file_count="multiple",
                         size="sm",
                     )
                     ingested_dataset = gr.List(
                         self._list_ingested_files,
-                        headers=["File name"],
-                        label="Ingested Files",
+                        headers=["Dosya Adı"],
+                        label="Yüklenen Dosyalar",
                         height=235,
                         interactive=False,
                         render=False,  # Rendered under the button
@@ -351,19 +361,19 @@ class PrivateGptUi:
                     )
                     ingested_dataset.render()
                     deselect_file_button = gr.components.Button(
-                        "De-select selected file", size="sm", interactive=False
+                        "Seçili dosyanın seçimini kaldır", size="sm", interactive=False
                     )
                     selected_text = gr.components.Textbox(
-                        "All files", label="Selected for Query or Deletion", max_lines=1
+                        "Tüm Dosyalar", label="Sorgu veya Silme işlemi için seçilen dosya", max_lines=1
                     )
                     delete_file_button = gr.components.Button(
-                        "🗑️ Delete selected file",
+                        "🗑️ Seçilen dosyayı sil",
                         size="sm",
                         visible=settings().ui.delete_file_button_enabled,
                         interactive=False,
                     )
                     delete_files_button = gr.components.Button(
-                        "⚠️ Delete ALL files",
+                        "⚠️ Tüm Dosyaları Sil",
                         size="sm",
                         visible=settings().ui.delete_all_files_button_enabled,
                     )
