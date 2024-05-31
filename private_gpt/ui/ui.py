@@ -477,7 +477,7 @@ class PrivateGptUi:
                     model_label = get_model_label()
                     if model_label is not None:
                         label_text = (
-                            f"LLM: {settings().llm.mode} | Model: {model_label}"
+                            f"LLM: {settings().llm.mode} | Model: BayGPTv1.0"
                         )
                     else:
                         label_text = f"LLM: {settings().llm.mode}"
