@@ -1,10 +1,20 @@
 class Versiyon_Bilgisi:
     major       = 0
     minor       = 1
-    build       = 5
+    build       = 6
     product_id  = 0
 
 #region VERSIYON GECMISI
+
+###########################################################
+# Versiyon : 0.1.6.0
+# Yazanlar : Batuhan Biber
+# Tarih    : 01.06.2024
+#
+# Gelismeler:
+# - local.yaml dosyasina commentle aciklamalar eklendi.
+#
+###########################################################
 
 ###########################################################
 # Versiyon : 0.1.5.0
