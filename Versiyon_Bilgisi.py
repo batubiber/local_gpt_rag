@@ -1,13 +1,23 @@
 class Versiyon_Bilgisi:
     major       = 0
     minor       = 1
-    build       = 4
+    build       = 5
     product_id  = 0
 
 #region VERSIYON GECMISI
 
 ###########################################################
-# Versiyon : 0.1.3.0
+# Versiyon : 0.1.5.0
+# Yazanlar : Batuhan Biber
+# Tarih    : 01.06.2024
+#
+# Gelismeler:
+# - Versiyon bilgisi duzeltildi.
+#
+###########################################################
+
+###########################################################
+# Versiyon : 0.1.4.0
 # Yazanlar : Batuhan Biber
 # Tarih    : 31.05.2024
 #
